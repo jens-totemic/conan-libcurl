@@ -9,7 +9,7 @@ from conans import ConanFile, AutoToolsBuildEnvironment, RunEnvironment, CMake, 
 
 class LibcurlConan(ConanFile):
     name = "libcurl"
-    version = "7.61.1"
+    version = "7.63.0"
     description = "command line tool and library for transferring data with URLs"
     url = "http://github.com/bincrafters/conan-libcurl"
     homepage = "http://curl.haxx.se"
@@ -43,7 +43,7 @@ class LibcurlConan(ConanFile):
                        "disable_threads=False",
                        "with_ldap=False",
                        "custom_cacert=False",
-                       "darwin_ssl=True",
+                       "darwin_ssl=False",
                        "with_libssh2=False",
                        "with_libidn=False",
                        "with_librtmp=False",
@@ -87,10 +87,10 @@ class LibcurlConan(ConanFile):
         # - with_openssl AND NOT with_winssl uses openssl
         # Moreover darwin_ssl is set by default and with_winssl is not
 
-        if self.options.with_openssl:
-            # enforce shared linking due to openssl dependency
-            if self.settings.os != "Macos" or not self.options.darwin_ssl:
-                self.options["OpenSSL"].shared = self.options.shared
+#        if self.options.with_openssl:
+#            # enforce shared linking due to openssl dependency
+#             if self.settings.os != "Macos" or not self.options.darwin_ssl:
+#                 self.options["OpenSSL"].shared = self.options.shared
         if self.options.with_libssh2:
             if self.settings.compiler != "Visual Studio":
                 self.options["libssh2"].shared = self.options.shared
@@ -133,7 +133,7 @@ class LibcurlConan(ConanFile):
             elif self.settings.os == "Windows" and self.options.with_winssl:
                 pass
             else:
-                self.requires.add("OpenSSL/1.0.2n@conan/stable")
+                self.requires.add("OpenSSL/1.0.2@conan/stable")
         if self.options.with_libssh2:
             if self.settings.compiler != "Visual Studio":
                 self.requires.add("libssh2/1.8.0@bincrafters/stable")
