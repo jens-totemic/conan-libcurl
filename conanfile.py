@@ -382,7 +382,9 @@ class LibcurlConan(ConanFile):
         with tools.environment_append(env_run.vars):
             with tools.chdir(self.source_subfolder):
                 # autoreconf
-                self.run('./buildconf', win_bash=self.is_mingw)
+                # TODO: we don't seem to need to run this, the configure file already
+                # exists. Also, on OSX at least the tool autoconf is not pre-installed
+                #self.run('./buildconf', win_bash=self.is_mingw)
 
                 # fix generated autotools files
                 tools.replace_in_file("configure", "-install_name \\$rpath/", "-install_name ")
